@@ -10,6 +10,8 @@ import CoreData
 
 struct ContentView: View {
     @State private var number = Int.random(in: 1...100)
+    @State private var selectedOption: String? = nil
+    
     
     var body: some View {
         VStack {
@@ -25,12 +27,24 @@ struct ContentView: View {
                     .foregroundColor(.blue)
                     .font(.title)
                     .padding()
-
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(selectedOption == "Not Prime" ? Color.blue : Color.clear, lineWidth: 3)
+                    )
+                    .onTapGesture {
+                        selectedOption = "Prime"
+                    }
                 Text("Not Prime")
                     .foregroundColor(.blue)
                     .font(.title)
                     .padding()
-        
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(selectedOption == "Not Prime" ? Color.blue : Color.clear, lineWidth: 3)
+                    )
+                    .onTapGesture {
+                        selectedOption = "Not Prime"
+                    }
             
             }
         }
