@@ -26,6 +26,23 @@ struct ContentView: View {
         }
     }
 }
+
+
+
+func isPrime(_ num: Int) -> Bool {
+    if num < 2 { return false }
+    for i in 2..<num { // Includes 2 but excludes num
+        if num % i == 0 {
+            return false
+        }
+    }
+    return true
+}
+
+
+
+
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
