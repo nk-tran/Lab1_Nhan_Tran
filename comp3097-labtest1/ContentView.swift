@@ -27,76 +27,93 @@ struct ContentView: View {
                     .bold()
                     .padding(.top, 60)
                     .padding(.bottom, 60)
-            
+                
                 // Prime Selection Button
-                Text("Prime")
-                    .foregroundColor(.blue)
-                    .font(.title)
-                    .padding()
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(selectedOption == "Not Prime" ? Color.blue : Color.clear, lineWidth: 3)
-                    )
-                    .onTapGesture {
-                        selectedOption = "Prime"
+                HStack(spacing: 20) {
+                    Button(action: {
+                        checkAnswer(selection: "Prime")
+                    }) {
+                        Text("Prime")
+                            .font(.title)
+                            .foregroundColor(.white)
+                            .frame(width: 120, height: 50)
+                            .background(selectedOption == "Prime" ? Color.green : Color.blue)
+                            .cornerRadius(10)
                     }
-                Text("Not Prime")
-                    .foregroundColor(.blue)
-                    .font(.title)
-                    .padding()
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(selectedOption == "Not Prime" ? Color.blue : Color.clear, lineWidth: 3)
-                    )
-                    .onTapGesture {
-                        selectedOption = "Not Prime"
+
+                    Button(action: {
+                        checkAnswer(selection: "Not Prime")
+                    }) {
+                        Text("Not Prime")
+                            .font(.title)
+                            .foregroundColor(.white)
+                            .frame(width: 120, height: 50)
+                            .background(selectedOption == "Not Prime" ? Color.green : Color.red)
+                            .cornerRadius(10)
                     }
-            
+                }
+                
+            }
+            .onAppear {
+                startTimer()
             }
         }
-    }
-    
-    // Start timer to auto-update number after 5 seconds
-    func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
-            self.wrongCount += 1
-            self.attemptCount += 1
-            self.isCorrect = false
-            self.checkSummary()
-            self.nextNumber()
-        }
-    }
-    
-    func isPrime(_ num: Int) -> Bool {
-        if num < 2 { return false }
-        for i in 2..<num { // Includes 2 but excludes num
-            if num % i == 0 {
-                return false
+        
+        // Start timer to auto-update number after 5 seconds
+        func startTimer() {
+            timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
+                self.wrongCount += 1
+                self.attemptCount += 1
+                self.isCorrect = false
             }
         }
-        return true
-    }
-    
-    // Get next number and reset selections
-    func nextNumber() {
-        number = Int.random(in: 1...100)
-        isCorrect = nil
-        selectedOption = nil
-        startTimer()
-    }
-    
-    // end game after 10 counts
-    func checkSummary() {
-        if attemptCount == 10 {
-            showAlert = true
+        
+        // end game after 10 counts
+        func checkSummary() {
+            if attemptCount == 10 {
+                showAlert = true
+            }
         }
+        
+        func isPrime(_ num: Int) -> Bool {
+            if num < 2 { return false }
+            for i in 2..<num { // Includes 2 but excludes num
+                if num % i == 0 {
+                    return false
+                }
+            }
+            return true
+        }
+        
+        // Get next number and reset selections
+        func nextNumber() {
+            number = Int.random(in: 1...100)
+            isCorrect = nil
+            selectedOption = nil
+            startTimer()
+        }
+        
+        
+        
+        func resetGame() {
+            correctCount = 0
+            wrongCount = 0
+            attemptCount = 0
+        }
+        
+        
+        func checkAnswer(selection: String) {
+            let correct = isPrime(number) ? "Prime" : "Not Prime"
+            if selection == correct {
+                correctCount += 1
+            } else {
+                wrongCount += 1
+            }
+            nextNumber()
+        }
+        
     }
-    
-    func resetGame() {
-        correctCount = 0
-        wrongCount = 0
-        attemptCount = 0
-    }
+        
 }
  
 
