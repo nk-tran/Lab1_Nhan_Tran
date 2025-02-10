@@ -5,6 +5,7 @@
 //  Created by Nhan Tran on 2025-02-10.
 //
 
+
 import SwiftUI
 import CoreData
 
@@ -25,18 +26,19 @@ struct ContentView: View {
                 Text("\(number)")
                     .font(.title)
                     .bold()
-                    .padding(.top, 60)
-                    .padding(.bottom, 60)
+                    .padding(.top, 30)
+                    .padding(.bottom, 120)
+                
                 
                 // Prime Selection Button
-                HStack(spacing: 20) {
+                VStack(spacing: 20) {
                     Button(action: {
                         checkAnswer(selection: "Prime")
                     }) {
                         Text("Prime")
                             .font(.title)
                             .foregroundColor(.white)
-                            .frame(width: 120, height: 50)
+                            .frame(width: 140, height: 50)
                             .background(selectedOption == "Prime" ? Color.green : Color.blue)
                             .cornerRadius(10)
                     }
@@ -47,7 +49,7 @@ struct ContentView: View {
                         Text("Not Prime")
                             .font(.title)
                             .foregroundColor(.white)
-                            .frame(width: 120, height: 50)
+                            .frame(width: 140, height: 50)
                             .background(selectedOption == "Not Prime" ? Color.green : Color.red)
                             .cornerRadius(10)
                     }
@@ -58,74 +60,67 @@ struct ContentView: View {
                 startTimer()
             }
         }
-        
-        // Start timer to auto-update number after 5 seconds
-        func startTimer() {
-            timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
-                self.wrongCount += 1
-                self.attemptCount += 1
-                self.isCorrect = false
-            }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Game Over"), message: Text("You answered \(correctCount) questions correctly and \(wrongCount) questions incorrectly."), dismissButton: .default(Text("OK")))
         }
-        
-        // end game after 10 counts
-        func checkSummary() {
-            if attemptCount == 10 {
-                showAlert = true
-            }
-        }
-        
-        func isPrime(_ num: Int) -> Bool {
-            if num < 2 { return false }
-            for i in 2..<num { // Includes 2 but excludes num
-                if num % i == 0 {
-                    return false
-                }
-            }
-            return true
-        }
-        
-        // Get next number and reset selections
-        func nextNumber() {
-            number = Int.random(in: 1...100)
-            isCorrect = nil
-            selectedOption = nil
-            startTimer()
-        }
-        
-        
-        
-        func resetGame() {
-            correctCount = 0
-            wrongCount = 0
-            attemptCount = 0
-        }
-        
-        
-        func checkAnswer(selection: String) {
-            let correct = isPrime(number) ? "Prime" : "Not Prime"
-            if selection == correct {
-                correctCount += 1
-            } else {
-                wrongCount += 1
-            }
+    }
+    
+    // Start timer to auto-update number after 5 seconds
+    func startTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
+            self.wrongCount += 1
+            self.attemptCount += 1
+            self.isCorrect = false
             nextNumber()
         }
-        
     }
-        
+    
+    // End game after 10 counts
+    func checkSummary() {
+        if attemptCount == 10 {
+            showAlert = true
+        }
+    }
+    
+    func isPrime(_ num: Int) -> Bool {
+        if num < 2 { return false }
+        for i in 2..<num { // Includes 2 but excludes num
+            if num % i == 0 {
+                return false
+            }
+        }
+        return true
+    }
+    
+    // Get next number and reset selections
+    func nextNumber() {
+        number = Int.random(in: 1...100)
+        isCorrect = nil
+        selectedOption = nil
+        attemptCount += 1
+        checkSummary()
+        startTimer()
+    }
+    
+    func resetGame() {
+        correctCount = 0
+        wrongCount = 0
+        attemptCount = 0
+    }
+    
+    func checkAnswer(selection: String) {
+        let correct = isPrime(number) ? "Prime" : "Not Prime"
+        if selection == correct {
+            correctCount += 1
+        } else {
+            wrongCount += 1
+        }
+        nextNumber()
+    }
 }
- 
-
-
-
-
-
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
 }
-
