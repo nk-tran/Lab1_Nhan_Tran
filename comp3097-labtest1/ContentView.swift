@@ -75,9 +75,9 @@ struct ContentView: View {
         }
     }
     
-    // End game after 10 counts
+    // End game after each 10 counts
     func checkSummary() {
-        if attemptCount == 10 {
+        if attemptCount % 10==0 {
             showAlert = true
         }
     }
@@ -109,6 +109,8 @@ struct ContentView: View {
     }
     
     func checkAnswer(selection: String) {
+        timer?.invalidate()
+        selectedOption = selection
         let correct = isPrime(number) ? "Prime" : "Not Prime"
         if selection == correct {
             correctCount += 1
