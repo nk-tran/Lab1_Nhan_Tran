@@ -13,6 +13,10 @@ struct ContentView: View {
     @State private var selectedOption: String? = nil
     @State private var timer: Timer? = nil
     @State private var isCorrect: Bool? = nil
+    @State private var attemptCount = 0
+    @State private var correctCount = 0
+    @State private var wrongCount = 0
+    @State private var showAlert = false
     
     var body: some View {
         VStack {
@@ -75,6 +79,19 @@ struct ContentView: View {
         isCorrect = nil
         selectedOption = nil
         startTimer()
+    }
+    
+    // end game after 10 counts
+    func checkSummary() {
+        if attemptCount == 10 {
+            showAlert = true
+        }
+    }
+    
+    func resetGame() {
+        correctCount = 0
+        wrongCount = 0
+        attemptCount = 0
     }
 }
  
