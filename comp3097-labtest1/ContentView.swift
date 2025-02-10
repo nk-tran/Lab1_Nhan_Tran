@@ -11,7 +11,8 @@ import CoreData
 struct ContentView: View {
     @State private var number = Int.random(in: 1...100)
     @State private var selectedOption: String? = nil
-    
+    @State private var timer: Timer? = nil
+    @State private var isCorrect: Bool? = nil
     
     var body: some View {
         VStack {
@@ -20,7 +21,8 @@ struct ContentView: View {
                 Text("\(number)")
                     .font(.title)
                     .bold()
-                    .padding(.top, 40)
+                    .padding(.top, 60)
+                    .padding(.bottom, 60)
             
                 // Prime Selection Button
                 Text("Prime")
@@ -49,19 +51,35 @@ struct ContentView: View {
             }
         }
     }
-}
-
-
-
-func isPrime(_ num: Int) -> Bool {
-    if num < 2 { return false }
-    for i in 2..<num { // Includes 2 but excludes num
-        if num % i == 0 {
-            return false
+    
+    // Start timer to auto-update number after 5 seconds
+    func startTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
+            self.nextNumber()
         }
     }
-    return true
+    
+    func isPrime(_ num: Int) -> Bool {
+        if num < 2 { return false }
+        for i in 2..<num { // Includes 2 but excludes num
+            if num % i == 0 {
+                return false
+            }
+        }
+        return true
+    }
+    
+    // Get next number and reset selections
+    func nextNumber() {
+        number = Int.random(in: 1...100)
+        isCorrect = nil
+        selectedOption = nil
+        startTimer()
+    }
 }
+ 
+
+
 
 
 
