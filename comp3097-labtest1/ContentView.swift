@@ -9,17 +9,27 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    @State private var num: Int = 0
+    @State private var number = Int.random(in: 1...100)
     
     var body: some View {
         VStack {
             // Title VStack
             VStack {
-                Text("Lab Test 1")
+                Text("\(number)")
                     .font(.title)
                     .bold()
                     .padding(.top, 40)
             
+                // Prime Selection Button
+                Text("Prime")
+                    .foregroundColor(.blue)
+                    .font(.title)
+                    .padding()
+
+                Text("Not Prime")
+                    .foregroundColor(.blue)
+                    .font(.title)
+                    .padding()
         
             
             }
