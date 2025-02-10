@@ -59,6 +59,10 @@ struct ContentView: View {
     // Start timer to auto-update number after 5 seconds
     func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
+            self.wrongCount += 1
+            self.attemptCount += 1
+            self.isCorrect = false
+            self.checkSummary()
             self.nextNumber()
         }
     }
