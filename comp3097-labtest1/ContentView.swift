@@ -8,14 +8,8 @@
 import SwiftUI
 import CoreData
 
-import SwiftUI
-import CoreData
-
-
-
 struct ContentView: View {
     @State private var num: Int = 0
-
     
     var body: some View {
         VStack {
@@ -25,14 +19,16 @@ struct ContentView: View {
                     .font(.title)
                     .bold()
                     .padding(.top, 40)
+            
+        
+            
             }
         }
-        
     }
 }
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
 }
+
