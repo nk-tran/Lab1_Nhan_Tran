@@ -62,18 +62,17 @@ struct ContentView: View {
             }
         }
         .alert(isPresented: $showAlert) {
-            Alert(title: Text("Game Over"), message: Text("You answered \(correctCount) questions correctly and \(wrongCount) questions incorrectly."), dismissButton: .default(Text("OK")))
+            Alert(title: Text("Game Over"), message: Text("You answered \(correctCount) questions correctly,\(wrongCount) questions incorrectly and \(unansweredCount) questions were unanswered."), dismissButton: .default(Text("OK")))
         }
     }
     
     // Start timer to auto-update number after 5 seconds
     func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
-            if selectedOption == nil {  
+            if selectedOption == nil {
                 unansweredCount += 1
             }
             self.attemptCount += 1
-            self.isCorrect = false
             checkSummary()
             nextNumber()
         }
@@ -81,7 +80,7 @@ struct ContentView: View {
     
     // End game after each 10 counts
     func checkSummary() {
-        if attemptCount % 10==0 {
+        if attemptCount == 10 {
             showAlert = true
             resetGame()
         }
@@ -108,6 +107,7 @@ struct ContentView: View {
     func resetGame() {
         correctCount = 0
         wrongCount = 0
+        unansweredCount = 0
         attemptCount = 0
         nextNumber()
     }
@@ -122,7 +122,10 @@ struct ContentView: View {
         } else {
             wrongCount += 1
         }
-        nextNumber()
+        checkSummary()
+        if attemptCount < 10 {
+            nextNumber() 
+        }
     }
 }
 
