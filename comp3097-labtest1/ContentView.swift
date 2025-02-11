@@ -90,6 +90,7 @@ struct ContentView: View {
         if attemptCount == 10 {
             gameEnded = true
             showAlert = true
+            timer?.invalidate()
         }
         else {
             nextNumber()
@@ -108,6 +109,7 @@ struct ContentView: View {
     
     // Get next number and reset selections
     func nextNumber() {
+        if gameEnded { return }
         number = Int.random(in: 1...100)
         isCorrect = nil
         selectedOption = nil
