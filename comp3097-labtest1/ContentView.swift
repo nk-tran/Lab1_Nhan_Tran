@@ -19,6 +19,7 @@ struct ContentView: View {
     @State private var wrongCount = 0
     @State private var showAlert = false
     @State private var unansweredCount = 0
+    @State private var gameEnded = false
     
     var body: some View {
         VStack {
@@ -58,31 +59,40 @@ struct ContentView: View {
                 
             }
             .onAppear {
-                startTimer()
+                if !gameEnded {
+                    startTimer()  // Start timer when the game first begins
+                }
             }
         }
         .alert(isPresented: $showAlert) {
-            Alert(title: Text("Game Over"), message: Text("You answered \(correctCount) questions correctly,\(wrongCount) questions incorrectly and \(unansweredCount) questions were unanswered."), dismissButton: .default(Text("OK")))
+            Alert(title: Text("Game Over"), message: Text("You answered \(correctCount) questions correctly,\(wrongCount) questions incorrectly and \(unansweredCount) questions were unanswered."), dismissButton: .default(Text("OK"), action: {
+                resetGame()
+            }))
+                
         }
     }
     
     // Start timer to auto-update number after 5 seconds
     func startTimer() {
+        if gameEnded { return }
+
         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
             if selectedOption == nil {
                 unansweredCount += 1
             }
-            self.attemptCount += 1
+            attemptCount += 1
             checkSummary()
-            nextNumber()
         }
     }
     
     // End game after each 10 counts
     func checkSummary() {
         if attemptCount == 10 {
+            gameEnded = true
             showAlert = true
-            resetGame()
+        }
+        else {
+            nextNumber()
         }
     }
     
@@ -109,11 +119,11 @@ struct ContentView: View {
         wrongCount = 0
         unansweredCount = 0
         attemptCount = 0
+        gameEnded = false
         nextNumber()
     }
     
     func checkAnswer(selection: String) {
-        timer?.invalidate()
         selectedOption = selection
         attemptCount += 1
         let correct = isPrime(number) ? "Prime" : "Not Prime"
@@ -124,7 +134,7 @@ struct ContentView: View {
         }
         checkSummary()
         if attemptCount < 10 {
-            nextNumber() 
+            nextNumber()
         }
     }
 }
