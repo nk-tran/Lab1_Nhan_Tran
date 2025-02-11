@@ -44,6 +44,7 @@ struct ContentView: View {
                             .background(selectedOption == "Prime" ? Color.green : Color.blue)
                             .cornerRadius(5)
                     }
+                    .disabled(showResult) 
 
                     Button(action: {
                         checkAnswer(selection: "Not Prime")
@@ -56,6 +57,7 @@ struct ContentView: View {
                             .cornerRadius(5)
                             .padding(.top, 10)
                     }
+                    .disabled(showResult)
                 }
                 Spacer()
                 
