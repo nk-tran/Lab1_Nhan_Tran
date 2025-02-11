@@ -18,6 +18,7 @@ struct ContentView: View {
     @State private var correctCount = 0
     @State private var wrongCount = 0
     @State private var showAlert = false
+    @State private var unansweredCount = 0
     
     var body: some View {
         VStack {
@@ -68,7 +69,9 @@ struct ContentView: View {
     // Start timer to auto-update number after 5 seconds
     func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
-            self.wrongCount += 1
+            if selectedOption == nil {  
+                unansweredCount += 1
+            }
             self.attemptCount += 1
             self.isCorrect = false
             checkSummary()
