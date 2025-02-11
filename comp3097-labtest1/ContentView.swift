@@ -71,6 +71,7 @@ struct ContentView: View {
             self.wrongCount += 1
             self.attemptCount += 1
             self.isCorrect = false
+            checkSummary()
             nextNumber()
         }
     }
@@ -97,8 +98,6 @@ struct ContentView: View {
         number = Int.random(in: 1...100)
         isCorrect = nil
         selectedOption = nil
-        attemptCount += 1
-        checkSummary()
         startTimer()
     }
     
@@ -106,6 +105,7 @@ struct ContentView: View {
         correctCount = 0
         wrongCount = 0
         attemptCount = 0
+        nextNumber()
     }
     
     func checkAnswer(selection: String) {
