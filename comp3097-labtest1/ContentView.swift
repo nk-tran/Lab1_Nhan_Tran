@@ -26,7 +26,7 @@ struct ContentView: View {
             // Title VStack
             VStack {
                 Text("\(number)")
-                    .font(.title)
+                    .font(.system(size:100))
                     .bold()
                     .padding(.top, 30)
                     .padding(.bottom, 120)
@@ -42,7 +42,7 @@ struct ContentView: View {
                             .foregroundColor(.white)
                             .frame(width: 140, height: 50)
                             .background(selectedOption == "Prime" ? Color.green : Color.blue)
-                            .cornerRadius(10)
+                            .cornerRadius(5)
                     }
 
                     Button(action: {
@@ -53,7 +53,8 @@ struct ContentView: View {
                             .foregroundColor(.white)
                             .frame(width: 140, height: 50)
                             .background(selectedOption == "Not Prime" ? Color.green : Color.red)
-                            .cornerRadius(10)
+                            .cornerRadius(5)
+                            .padding(.top, 10)
                     }
                 }
                 
