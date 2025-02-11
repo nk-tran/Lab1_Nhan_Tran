@@ -18,7 +18,7 @@ struct ContentView: View {
     @State private var correctCount = 0
     @State private var wrongCount = 0
     @State private var showAlert = false
-
+    @State private var showResult = false
     @State private var gameEnded = false
     
     var body: some View {
@@ -57,6 +57,21 @@ struct ContentView: View {
                             .padding(.top, 10)
                     }
                 }
+                Spacer()
+                
+                if showResult {
+                                    if isCorrect == true {
+                                        Image(systemName: "checkmark")
+                                            .padding(.top, 20)
+                                            .foregroundColor(.green)
+                                            .font(.system(size: 120))
+                                    } else {
+                                        Image(systemName: "xmark")
+                                            .padding(.top, 20)
+                                            .foregroundColor(.red)
+                                            .font(.system(size: 125))
+                                    }
+                                }
                 
             }
             .onAppear {
@@ -94,8 +109,11 @@ struct ContentView: View {
             timer?.invalidate() // Stop timer once condition is met
         }
         else {
-            nextNumber()
-        }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    showResult = false
+                    nextNumber()
+                }
+            }
     }
     
     func isPrime(_ num: Int) -> Bool {
@@ -114,6 +132,7 @@ struct ContentView: View {
         number = Int.random(in: 1...100)
         isCorrect = nil
         selectedOption = nil
+        showResult = false
         startTimer()
     }
     
@@ -127,17 +146,18 @@ struct ContentView: View {
     
     func checkAnswer(selection: String) {
         selectedOption = selection
+        timer?.invalidate()
         attemptCount += 1
         let correct = isPrime(number) ? "Prime" : "Not Prime"
         if selection == correct {
             correctCount += 1
+            isCorrect = true
         } else {
             wrongCount += 1
+            isCorrect = false
         }
+        showResult = true
         checkSummary()
-        if attemptCount < 10 {
-            nextNumber()
-        }
     }
 }
 
