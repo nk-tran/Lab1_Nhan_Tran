@@ -111,6 +111,7 @@ struct ContentView: View {
     func checkAnswer(selection: String) {
         timer?.invalidate()
         selectedOption = selection
+        attemptCount += 1
         let correct = isPrime(number) ? "Prime" : "Not Prime"
         if selection == correct {
             correctCount += 1
