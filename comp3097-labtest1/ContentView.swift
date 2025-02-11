@@ -18,7 +18,7 @@ struct ContentView: View {
     @State private var correctCount = 0
     @State private var wrongCount = 0
     @State private var showAlert = false
-    @State private var unansweredCount = 0
+
     @State private var gameEnded = false
     
     var body: some View {
@@ -66,7 +66,7 @@ struct ContentView: View {
             }
         }
         .alert(isPresented: $showAlert) {
-            Alert(title: Text("Game Over"), message: Text("You answered \(correctCount) questions correctly,\(wrongCount) questions incorrectly and \(unansweredCount) questions were unanswered."), dismissButton: .default(Text("OK"), action: {
+            Alert(title: Text("Game Over"), message: Text("You answered \(correctCount) questions correctly and \(wrongCount) questions incorrectly."), dismissButton: .default(Text("OK"), action: {
                 resetGame()
             }))
                 
@@ -79,7 +79,7 @@ struct ContentView: View {
 
         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
             if selectedOption == nil {
-                unansweredCount += 1
+                wrongCount += 1
             }
             attemptCount += 1
             checkSummary()
@@ -120,7 +120,6 @@ struct ContentView: View {
     func resetGame() {
         correctCount = 0
         wrongCount = 0
-        unansweredCount = 0
         attemptCount = 0
         gameEnded = false
         nextNumber()
