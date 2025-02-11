@@ -80,6 +80,7 @@ struct ContentView: View {
     func checkSummary() {
         if attemptCount % 10==0 {
             showAlert = true
+            resetGame()
         }
     }
     
